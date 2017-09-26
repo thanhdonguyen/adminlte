@@ -18,3 +18,17 @@ Route::post('register',['as'=>'postRegister','uses'=>'LoginController@postRegist
 Route::get('send-mail',['as'=>'sendmail','uses'=>'LoginController@getSendmail']);
 Route::post('send-mail',['as'=>'postSenmail','uses'=>'LoginController@postSendmail']);
 Route::get('reset/{token}',['as'=>'resetpass','uses'=>'LoginController@getResetpass']);
+Route::post('reset/{token}',['as'=>'postResetpass','uses'=>'LoginController@postResetpass']);
+Route::get('logout',['as'=>'logout','uses' => 'LoginController@getLogout']);
+Route::group(['prefix'=>'admin','middleware'=>'adminlogin'],function (){
+	Route::group(['prefix'=>'mail'],function(){
+		Route::get(
+			'home',['as'=>'admin.mail.getmail','uses'=>'SendMailController@getmail']);
+		Route::post(
+			'home',['as'=>'admin.mail.postmail','uses'=>'SendMailController@postmail']);
+		Route::get(
+			'sent',['as'=>'admin.mail.sent','uses'=>'SendMailController@getsent']);
+		Route::get(
+			'read',['as'=>'admin.mail.read','uses'=>'SendMailController@getread']);
+		});
+	});

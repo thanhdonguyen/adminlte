@@ -5,8 +5,15 @@
     <p class="login-box-msg">Reset password</p>
     <form method="POST">
       {{ csrf_field() }}
-    <div class="form-group has-feedback {{ $errors->has('password')?'has-error':'' }}">
-        <input type="password" class="form-control" placeholder="Password Current" id="password-current" name="password-current">
+      {{ csrf_field() }}
+      @if (session('message'))
+        <i>{{ session('message') }}</i>
+      @endif
+      @if($errors->has('email'))
+        <i>{{ $errors->first('email') }}</i>
+      @endif
+    <div class="form-group has-feedback {{ $errors->has('email')?'has-error':'' }}">
+        <input type="text" class="form-control" placeholder="Email" id="email" name="email" value="{{ old('email') }}">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       @if($errors->has('password'))

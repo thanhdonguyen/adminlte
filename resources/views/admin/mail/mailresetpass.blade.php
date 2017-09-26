@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="">
 </head>
 <body>
-	{{ dd($email) }}
+	<h1>Welcome {{ $name }} </h1><br>
+	<a href="{{ URL::route('resetpass',$token) }}">{{ URL::route('resetpass',$token) }}</a>
 </body>
 </html>

@@ -2,25 +2,23 @@
 
 namespace App\Mail;
 
-use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class Resetpass extends Mailable
+class SendMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $email;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(User $email)
+    public function __construct()
     {
-        $this->email = $email;
+        //
     }
 
     /**
@@ -30,6 +28,6 @@ class Resetpass extends Mailable
      */
     public function build()
     {
-        return $this->view('admin.mail.mailresetpass')->subject('confirm reset password');
+        return $this->view('view.name');
     }
 }

@@ -33,15 +33,15 @@
             </span>
           </a>
           <ul class="treeview-menu">
+            <li class="active"><a href="{{ route('admin.mail.getmail') }}">Compose</a></li>
             <li>
-              <a href="mailbox.html">Inbox
+              <a href="{{ route('admin.mail.sent') }}">Sent
                 <span class="pull-right-container">
                   <span class="label label-primary pull-right">13</span>
                 </span>
               </a>
             </li>
-            <li class="active"><a href="compose.html">Compose</a></li>
-            <li><a href="read-mail.html">Read</a></li>
+            <li><a href="{{ route('admin.mail.read') }}">Read</a></li>
           </ul>
         </li>
         <li class="header">LABELS</li>

@@ -1,9 +1,13 @@
 @extends('admin.login.masterlogin')
 @section('content')
   <div class="login-box-body">
+     <span>
+      @if(session('message'))
+        {{ session('message') }}
+      @endif
+    </span>
     <p class="login-box-msg">Sign in to start your session</p>
-
-    <form method="POST">
+    <form method="POST" action="{{ route('postLogin') }}">
       {{ csrf_field() }}
       @if($errors->has('email'))
         <i>{{ $errors->first('email') }}</i>
