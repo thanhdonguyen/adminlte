@@ -1,5 +1,6 @@
   @extends('admin.layout')
   @section('content')
+  @include('admin.ajax.addmail')
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -17,8 +18,57 @@
     <section class="content">
       <div class="row">
         <!-- /.col -->
-        <div class="col-md-12">
-          <form action="{{ route('admin.mail.postmail') }}" method="POST">
+        <div class="col-md-6">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Email list</h3>
+              <button type="button" style="width: 25%" class="btn btn-block btn-primary" id="btn_addmail">Add new email</button>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th><input type="checkbox" id="checkAll"></th>
+                  <th>Email</th>
+                  <th>Company</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td><input type="checkbox" class='chkbx' value="thanhdo@allgrow-labo.jp"></td>
+                  <td>thanhdo@allgrow-labo.jp
+                  </td>
+                  <td>AGL</td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" class='chkbx' value="nguyenthanhdo20@gmail.com"></td>
+                  <td>nguyenthanhdo20@gmail.com
+                  </td>
+                  <td>ABC</td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" class='chkbx' value="thanhdo181@gmail.com"></td>
+                  <td>thanhdo181@gmail.com
+                  </td>
+                  <td>XYZ</td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                  <th></th>
+                  <th>Email</th>
+                  <th>Company</th>
+                </tr>
+                </tfoot>
+              </table>
+              <div id="log"></div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+        </div>
+        <div class="col-md-6">
+          <form action="{{ route('admin.mail.postmail') }}" method="POST" enctype="multipart/form-data">
             {{ csrf_field() }}
             <div class="box box-primary">
               <div class="box-header with-border">
@@ -26,29 +76,39 @@
               </div>
               <!-- /.box-header -->
               <div class="box-body">
-                @if($errors->has('select_to'))
+                <!-- @if($errors->has('select_to'))
                   <i>{{ $errors->first('select_to') }}</i>
                 @endif
                 <div class="form-group {{ $errors->has('select_to')?'has-error':'' }}">
                   <select class="form-control select2" multiple="multiple" data-placeholder="To:" style="width: 100%;" id="select_to[]" name="select_to[]">
-                  @foreach($user as $us)
-                    <option value="{{ $us['email'] }}">{{ $us['email'] }}</option>
-                  @endforeach
                   </select>
                 </div>
                 <div class="form-group">
                   <select class="form-control select2" multiple="multiple" data-placeholder="Ccc:" style="width: 100%;" id="select_ccc[]" name="select_ccc[]">
-                  @foreach($user as $us)
-                    <option value="{{ $us['email'] }}">{{ $us['email'] }}</option>
-                  @endforeach
                   </select>
                 </div>
                 <div class="form-group">
                   <select class="form-control select2" multiple="multiple" data-placeholder="Bcc:" style="width: 100%;" id="select_bcc[]" name="select_bcc[]">
-                  @foreach($user as $us)
-                    <option value="{{ $us['email'] }}">{{ $us['email'] }}</option>
-                  @endforeach
                   </select>
+                </div> -->
+                @if($errors->has('email_to'))
+                  <i>{{ $errors->first('email_to') }}</i>
+                @endif
+                <div class="form-group {{ $errors->has('email_to')?'has-error':'' }}">
+                  <input id="email_to" class="form-control" placeholder="To :" name="email_to" value="" />
+                </div>
+                <!-- <div class="form-group {{ $errors->has('mail_to')?'has-error':'' }}">
+                  <input id="mail_to" class="form-control" placeholder="To :" name="mail_to[]" value="" />
+                </div> -->
+                <!-- <div class="form-group">
+                  <div id="email_tos"></div>
+                  <input type="hidden" name="customer_ids" id="customer_ids">
+                </div> -->
+                 <!-- <div class="form-group">
+                  <input id="mail_bcc" class="form-control" placeholder="Bcc :" name="mail_bcc[]"/>
+                </div> -->
+                <div class="form-group">
+                  <input id="title" name="title" class="form-control" placeholder="Title:">
                 </div>
                 <div class="form-group">
                   <input id="subject" name="subject" class="form-control" placeholder="Subject:">
@@ -61,12 +121,15 @@
                         
                       </textarea>
                 </div>
+                @if($errors->has('attachment'))
+                  <i>{{ $errors->first('attachment') }}</i>
+                @endif
                 <div class="form-group">
                   <div class="btn btn-default btn-file">
                     <i class="fa fa-paperclip"></i> Attachment
-                    <input type="file" name="attachment" id="attachment">
+                    <input type="file" name="attachment[]" id="attachment">
                   </div>
-                  <p class="help-block">Max. 32MB</p>
+                  <p class="help-block">Max. 2MB</p>
                 </div>
               </div>
               <!-- /.box-body -->

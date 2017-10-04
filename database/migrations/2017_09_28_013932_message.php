@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSentmailsTable extends Migration
+class Message extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,7 @@ class CreateSentmailsTable extends Migration
      * @return void
      */
     public function up()
-    {
-        Schema::create('sentmails', function (Blueprint $table) {
+    {   Schema::create('message', function (Blueprint $table) {
             $table->increments('id')->index();
             $table->string('mail_to');
             $table->string('mail_ccc')->nullable();
@@ -33,6 +32,6 @@ class CreateSentmailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sentmails');
+        Schema::dropIfExists('message');
     }
 }

@@ -6,6 +6,7 @@
   <title>AdminLTE 2 | Compose Message</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="{{ url('admin/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
   <!-- Font Awesome -->
@@ -21,7 +22,11 @@
   <link rel="stylesheet" href="{{ url('admin/plugins/iCheck/flat/blue.css') }}">
   <!-- bootstrap wysihtml5 - text editor -->
   <link rel="stylesheet" href="{{ url('admin/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') }}">
-  <link rel="stylesheet" href="{{ url('admin/bower_components/select2/dist/css/select2.min.css') }}">
+   <!-- DataTables -->
+  <link rel="stylesheet" href="{{ url('admin/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css')}}">
+  <!-- <link rel="stylesheet" href="{{ url('admin/bower_components/select2/dist/css/select2.min.css') }}"> -->
+  <link rel="stylesheet" href="{{ url('admin/css/magicsuggest-min.css') }}">
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/styles/metro/notify-metro.css" /> -->
   <!-- <link rel="stylesheet" href="{{ url('admin/plugins/iCheck/flat/blue.css') }}"> -->
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -69,8 +74,10 @@
 <!-- ./wrapper -->
 
 <!-- jQuery 3 -->
-<script src="{{ url('admin/bower_components/jquery/dist/jquery.min.js') }}"></script>
+
 <!-- Bootstrap 3.3.7 -->
+<!-- <script src="{{ url('admin/bower_components/jquery/dist/jquery.min.js') }}"></script> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script src="{{ url('admin/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 <!-- Slimscroll -->
 <script src="{{ url('admin/bower_components/jquery-slimscroll/jquery.slimscroll.min.js') }}"></script>
@@ -82,66 +89,147 @@
 <script src="{{ url('admin/js/demo.js') }}"></script>
 <!-- iCheck -->
 <script src="{{ url('admin/plugins/iCheck/icheck.min.js') }}"></script>
-<script src="{{ url('admin/bower_components/select2/dist/js/select2.full.min.js') }}"></script>
+<!-- <script src="{{ url('admin/bower_components/select2/dist/js/select2.full.min.js') }}"></script> -->
 <!-- Bootstrap WYSIHTML5 -->
 <script src="{{ url('admin/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') }}"></script>
+<script src="{{ url('admin/js/magicsuggest-min.js') }}"></script>
+<!-- DataTables -->
+<script src="{{ url('admin/bower_components/datatables.net/js/jquery.dataTables.min.js')}}"></script>
+<script src="{{ url('admin/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js')}}"></script>
+<script src="{{ url('admin/js/sweetalert.min.js') }}"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script> -->
+
+
+
 <!-- Page Script -->
 <script>
   $(function () {
     //Add text editor
     $("#compose-textarea").wysihtml5();
+    $("#btn_addmail").click(function(){
+        $("#myModal").modal();
+    });
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    $('#frm-addmail').on('submit',function(e){
+      // toastr.success( json.message , "Notifications" );
+      e.preventDefault();
+      var data = $(this).serialize();
+      var url = $(this).attr('action');
+      var post = $(this).attr('method');
+      $('#email-error').html("");
+      $.ajax({
+        type : post,
+        url : url,
+        data : data,
+        dataType : 'json',
+        success:function(data){
+          $('#myModal').modal('hide');
+          swal("Insert success !", "You clicked the button!", "success");
+        },
+        error: function(data){
+          var errors = data.responseJSON;
+          var email3 = errors.responseJSON;
+          console.log(email3);
+          $(errors).each(function(i,val){
+            $.each(val,function(k,v){
+              console.log(k+" : "+ v);
+            });
+          });
+          // console.log(errors);
+          $('#email-error').html(errors.email3);
+        }
+      });
+      // console.log(data);
+    });
+    var email_tos = $('#email_tos').magicSuggest({
+      data: '{{ route('getApi') }}',
+      ajaxConfig: {
+        xhrFields: {
+          withCredentials: true,
+        }
+      }
+    });
+    $(email_tos).on('selectionchange', function(){
+      var objval_array = this.getValue();
+      $('input[name=customer_ids]').val(JSON.stringify(objval_array));
+    });
+    $('#example1').DataTable()
+    $('#example2').DataTable({
+      'paging'      : true,
+      'lengthChange': false,
+      'searching'   : false,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : false
+    })
+    // $( "input[type=checkbox]" ).on( "click", function(){
+    //   // alert($(this).val());
+    //   ('#mail').val($(this).val());
+    // });
+    $("#checkAll").click(function () {
+      $('input:checkbox').not(this).prop('checked', this.checked);
+      var text = "";
+      $('.chkbx:checked').each(function(){
+          text += $(this).val()+',';
+      });
+      text = text.substring(0,text.length-1);
+      $('#email_to').val(text);
+    });
+    $('.chkbx').click(function(){
+      var text = "";
+      $('.chkbx:checked').each(function(){
+          text += $(this).val()+',';
+      });
+      text = text.substring(0,text.length-1);
+      $('#email_to').val(text);
+    });
   });
 </script>
-<script>
+<!-- <script>
   $(function () {
     //Initialize Select2 Elements
-    $('.select2').select2()
-  })
-</script>
-<script>
-  $(function () {
-    //Enable iCheck plugin for checkboxes
-    //iCheck for checkbox and radio inputs
-    $('.mailbox-messages input[type="checkbox"]').iCheck({
-      checkboxClass: 'icheckbox_flat-blue',
-      radioClass: 'iradio_flat-blue'
-    });
+    $('.select2').select2({
+      ajax : {
+        url: '/api/mail',
+        dataType : 'json',
+        delay : 200,
+        data : function(params){
+          return{
+            q : params.term,
+            page : params.page
+          };
+        },
+        processResults : function(data,params){
+          params.page = params.page || 1;
 
-    //Enable check and uncheck all functionality
-    $(".checkbox-toggle").click(function () {
-      var clicks = $(this).data('clicks');
-      if (clicks) {
-        //Uncheck all checkboxes
-        $(".mailbox-messages input[type='checkbox']").iCheck("uncheck");
-        $(".fa", this).removeClass("fa-check-square-o").addClass('fa-square-o');
-      } else {
-        //Check all checkboxes
-        $(".mailbox-messages input[type='checkbox']").iCheck("check");
-        $(".fa", this).removeClass("fa-square-o").addClass('fa-check-square-o');
-      }
-      $(this).data("clicks", !clicks);
-    });
+          return{
+            results : data.data,
+            pagination: {
+              more : (params.page * 10) < data.total
+            }
+          };
+        }
+      },
+      mininumInputLenght : 1,
+      tags: true,
+      templateResult : function(repo){
+        if(repo.loading) return repo.email;
 
-    //Handle starring for glyphicon and font awesome
-    $(".mailbox-star").click(function (e) {
-      e.preventDefault();
-      //detect type
-      var $this = $(this).find("a > i");
-      var glyph = $this.hasClass("glyphicon");
-      var fa = $this.hasClass("fa");
+        var markup = repo.email;
 
-      //Switch states
-      if (glyph) {
-        $this.toggleClass("glyphicon-star");
-        $this.toggleClass("glyphicon-star-empty");
-      }
-
-      if (fa) {
-        $this.toggleClass("fa-star");
-        $this.toggleClass("fa-star-o");
-      }
+        return markup;
+      },
+      templateSelection :function(repo)
+      {
+        return repo.email;
+      },
+      escapeMarkup : function(markup ){return markup;}
     });
   });
-</script>
+</script> -->
 </body>
 </html>

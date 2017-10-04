@@ -20,12 +20,15 @@ Route::post('send-mail',['as'=>'postSenmail','uses'=>'LoginController@postSendma
 Route::get('reset/{token}',['as'=>'resetpass','uses'=>'LoginController@getResetpass']);
 Route::post('reset/{token}',['as'=>'postResetpass','uses'=>'LoginController@postResetpass']);
 Route::get('logout',['as'=>'logout','uses' => 'LoginController@getLogout']);
+Route::post('api/mail',['as'=>'getApi','uses'=>'SendMailController@getApi']);
 Route::group(['prefix'=>'admin','middleware'=>'adminlogin'],function (){
 	Route::group(['prefix'=>'mail'],function(){
 		Route::get(
 			'home',['as'=>'admin.mail.getmail','uses'=>'SendMailController@getmail']);
 		Route::post(
 			'home',['as'=>'admin.mail.postmail','uses'=>'SendMailController@postmail']);
+		Route::post(
+			'addmail',['as'=>'admin.mail.addMail','uses'=>'SendMailController@postAddmail']);
 		Route::get(
 			'sent',['as'=>'admin.mail.sent','uses'=>'SendMailController@getsent']);
 		Route::get(
