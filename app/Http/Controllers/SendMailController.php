@@ -27,7 +27,8 @@ class SendMailController extends Controller
         }
     }
     public function getmail(Request $request){
-        return view('admin.page.mailbox');
+        $customers = Customers::all();
+        return view('admin.page.mailbox',compact('customers'));
     }
     public function postmail(RequestSentmail $request){
         // $email_to = $request->mail_to;
@@ -70,8 +71,11 @@ class SendMailController extends Controller
             return response($request->all());
         }
         return response()->json([
-                'data' => $errors
-            ]);
+            'data' => $errors
+        ]);
+    }
+    public function postUpdateMail(Request $request,$id){
+
     }
     public function getsent(){
     	return view('admin.page.sent');

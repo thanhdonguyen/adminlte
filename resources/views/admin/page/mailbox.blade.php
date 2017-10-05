@@ -1,6 +1,7 @@
   @extends('admin.layout')
   @section('content')
   @include('admin.ajax.addmail')
+  @include('admin.ajax.updatemail')
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -34,25 +35,15 @@
                   <th>Company</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="customers">
+                  @foreach( $customers as $cus )
                 <tr>
-                  <td><input type="checkbox" class='chkbx' value="thanhdo@allgrow-labo.jp"></td>
-                  <td>thanhdo@allgrow-labo.jp
+                  <td><input type="checkbox" class='chkbx' value="{{ $cus->email }}"></td>
+                  <td><a id="update-mail" href="#update-mail">{{ $cus->email }}</a>
                   </td>
-                  <td>AGL</td>
+                  <td><a id="update-mail" href="#update-mail">{{ $cus->company }}</a></td>
                 </tr>
-                <tr>
-                  <td><input type="checkbox" class='chkbx' value="nguyenthanhdo20@gmail.com"></td>
-                  <td>nguyenthanhdo20@gmail.com
-                  </td>
-                  <td>ABC</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" class='chkbx' value="thanhdo181@gmail.com"></td>
-                  <td>thanhdo181@gmail.com
-                  </td>
-                  <td>XYZ</td>
-                </tr>
+                @endforeach
                 </tbody>
                 <tfoot>
                 <tr>

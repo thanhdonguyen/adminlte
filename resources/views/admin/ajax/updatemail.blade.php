@@ -1,6 +1,5 @@
-<div class="modal fade" id="AddmailModal" role="dialog">
+<div class="modal fade" id="UpdatemailModal" role="dialog">
     <div class="modal-dialog">
-    
       <!-- Modal content-->
       <div class="modal-content">
                   <!-- Horizontal Form -->
@@ -10,7 +9,7 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form class="form-horizontal" id="frm-addmail" method="POST" action="{{ route('admin.mail.addMail') }}">
+            <form class="form-horizontal" id="frm-updatemail" method="POST" action="{{ route('admin.mail.addMail') }}">
               {{ csrf_field() }}
               <div class="box-body">
                 <div class="form-group">
@@ -53,7 +52,7 @@
               <!-- /.box-body -->
               <div class="box-footer">
                 <!-- <button type="submit" class="btn btn-default">Cancel</button> -->
-                <button type="button" class="btn btn-default" id="close-addmail" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" id="close-updatemail" data-dismiss="modal">Close</button>
                 <button type="submit" id="btn_addemail" class="btn btn-info pull-right" style="background-color: #3c8dbc">Save</button>
               </div>
               <!-- /.box-footer -->

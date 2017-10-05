@@ -29,6 +29,8 @@ Route::group(['prefix'=>'admin','middleware'=>'adminlogin'],function (){
 			'home',['as'=>'admin.mail.postmail','uses'=>'SendMailController@postmail']);
 		Route::post(
 			'addmail',['as'=>'admin.mail.addMail','uses'=>'SendMailController@postAddmail']);
+		Route::post(
+			'updatmail/{id}',['as'=>'admin.mail.updateMail','uses'=>'SendMailController@postUpdateMail']);
 		Route::get(
 			'sent',['as'=>'admin.mail.sent','uses'=>'SendMailController@getsent']);
 		Route::get(
