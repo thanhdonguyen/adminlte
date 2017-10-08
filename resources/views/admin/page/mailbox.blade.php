@@ -1,7 +1,7 @@
   @extends('admin.layout')
   @section('content')
   @include('admin.ajax.addmail')
-  @include('admin.ajax.updatemail')
+  @include('admin.ajax.editmail')
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -26,7 +26,7 @@
               <button type="button" style="width: 25%" class="btn btn-block btn-primary" id="btn_addmail">Add new email</button>
             </div>
             <!-- /.box-header -->
-            <div class="box-body">
+            <div class="box-body" id="reloadajax">
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
@@ -39,9 +39,8 @@
                   @foreach( $customers as $cus )
                 <tr>
                   <td><input type="checkbox" class='chkbx' value="{{ $cus->email }}"></td>
-                  <td><a id="update-mail" href="#update-mail">{{ $cus->email }}</a>
-                  </td>
-                  <td><a id="update-mail" href="#update-mail">{{ $cus->company }}</a></td>
+                  <td><a style="cursor: pointer;" id="edit-mail" data="{{ $cus->id }}">{{ $cus->email }}</a></td>
+                  <td><a style="cursor: pointer;" id="edit-mail" data="{{ $cus->id }}">{{ $cus->company }}</a></td>
                 </tr>
                 @endforeach
                 </tbody>
@@ -53,7 +52,6 @@
                 </tr>
                 </tfoot>
               </table>
-              <div id="log"></div>
             </div>
             <!-- /.box-body -->
           </div>

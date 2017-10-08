@@ -29,8 +29,10 @@ Route::group(['prefix'=>'admin','middleware'=>'adminlogin'],function (){
 			'home',['as'=>'admin.mail.postmail','uses'=>'SendMailController@postmail']);
 		Route::post(
 			'addmail',['as'=>'admin.mail.addMail','uses'=>'SendMailController@postAddmail']);
+		Route::get(
+			'editmail',['as'=>'admin.mail.getEditMail','uses'=>'SendMailController@getEditMail']);
 		Route::post(
-			'updatmail/{id}',['as'=>'admin.mail.updateMail','uses'=>'SendMailController@postUpdateMail']);
+			'editmail',['as'=>'admin.mail.postEditMail','uses'=>'SendMailController@postEditMail']);
 		Route::get(
 			'sent',['as'=>'admin.mail.sent','uses'=>'SendMailController@getsent']);
 		Route::get(

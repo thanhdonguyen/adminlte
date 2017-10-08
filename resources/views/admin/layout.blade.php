@@ -98,7 +98,7 @@
 <script src="{{ url('admin/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js')}}"></script>
 <script src="{{ url('admin/js/sweetalert.min.js') }}"></script>
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script> -->
-<script type="text/javascript" src="{{ url('admin/js/admin.js') }}"></script>
+@include('admin.include.scrip')
 
 
 <!-- Page Script -->

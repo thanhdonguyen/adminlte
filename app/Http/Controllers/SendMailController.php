@@ -74,8 +74,18 @@ class SendMailController extends Controller
             'data' => $errors
         ]);
     }
-    public function postUpdateMail(Request $request,$id){
-
+    public function postEditMail(Request $request){
+        if ($request->ajax()) {
+            $customers = Customers::find($request->id);
+            $customers->update($request->all());
+            return response($request->all());
+        }
+    }
+    public function getEditMail(Request $request){
+        if ($request->ajax()) {
+            $customers = Customers::find($request->id);
+            return response($customers);
+        }
     }
     public function getsent(){
     	return view('admin.page.sent');
