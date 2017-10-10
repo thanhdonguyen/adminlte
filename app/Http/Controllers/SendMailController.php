@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\RequestSentmail;
 use App\Http\Requests\RequestAddMail;
-use Auth,DB,Mail;
+use App\Mail\SendMail;
+use Illuminate\Support\Facades\Storage;
+use Auth,DB,Mail,File;
 use App\User;
 use App\Customers;
+use App\Message;
 
 
 class SendMailController extends Controller
@@ -31,38 +34,27 @@ class SendMailController extends Controller
         return view('admin.page.mailbox',compact('customers'));
     }
     public function postmail(RequestSentmail $request){
-        // $email_to = $request->mail_to;
-        // $email_ccc = $request->mail_ccc;
-        // $email_bcc = $request->mail_bcc;
-        // $data =
-        // [
-        //     'email_to' =>  $email_to,
-        //     'email_ccc' => $email_ccc,
-        //     'email_bcc' => $email_bcc,
-        //     'title' => $request->title,
-        //     'subject' => $request->subject,
-        //     'message' => $request->message,
-        //     'attachment' => $request->attachment
-        // ];
-        // Mail::send('admin.mail.message',['message'=>$request->message],function($message) use ($data){
-        //     $mailTo = $data['email_to'];
-        //     foreach($mailTo as $to){
-        //         $message->to($to);
-        //     }
-        //     $message->subject($data['subject']);
-        // });
-        echo $email_to = $request->email_to;
+        $email_to = $request->email_to;
         $email = explode(",",$email_to);
-        // print_r($email);
+        $title = $request->title;
+        $subject = $request->subject;
+        $message = $request->message;
+        //--------
+        // $path = $request->file('attachment')->store('public');
+        // return $path;
+        // $name = $request->file('attachment')->getClientOriginalName();
+        // Storage::move('public/'.$name,'public/upload/'.$name);
+        //--------
         foreach($email as $e){
-            echo $e."</br>";
+            Mail::to($e)->send(new SendMail($message));
+
         }
 
     }
     public function postAddmail(RequestAddMail $request){
         if($request->ajax()){
             Customers::create([
-                'email'=>$request->email3,
+                'email'=>strtolower(trim($request->email3)),
                 'company'=>$request->company,
                 'first_name'=>$request->first_name,
                 'last_name'=>$request->last_name,
@@ -84,6 +76,14 @@ class SendMailController extends Controller
     public function getEditMail(Request $request){
         if ($request->ajax()) {
             $customers = Customers::find($request->id);
+            return response($customers);
+        }
+    }
+    public function postdeleteMail(Request $request){
+        if ($request->ajax()) {
+            $customers = Customers::find($request->id);
+            $customers->delete();
+            // error_log($request->id,3,"sendmail.log");
             return response($customers);
         }
     }

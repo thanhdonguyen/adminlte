@@ -24,18 +24,43 @@ Route::post('api/mail',['as'=>'getApi','uses'=>'SendMailController@getApi']);
 Route::group(['prefix'=>'admin','middleware'=>'adminlogin'],function (){
 	Route::group(['prefix'=>'mail'],function(){
 		Route::get(
-			'home',['as'=>'admin.mail.getmail','uses'=>'SendMailController@getmail']);
+			'home',[
+				'as'=>'admin.mail.getmail',
+				'uses'=>'SendMailController@getmail'
+			]);
 		Route::post(
-			'home',['as'=>'admin.mail.postmail','uses'=>'SendMailController@postmail']);
+			'home',[
+				'as'=>'admin.mail.postmail',
+				'uses'=>'SendMailController@postmail'
+			]);
 		Route::post(
-			'addmail',['as'=>'admin.mail.addMail','uses'=>'SendMailController@postAddmail']);
+			'addmail',[
+				'as'=>'admin.mail.addMail',
+				'uses'=>'SendMailController@postAddmail'
+			]);
 		Route::get(
-			'editmail',['as'=>'admin.mail.getEditMail','uses'=>'SendMailController@getEditMail']);
+			'editmail',[
+				'as'=>'admin.mail.getEditMail',
+				'uses'=>'SendMailController@getEditMail'
+			]);
 		Route::post(
-			'editmail',['as'=>'admin.mail.postEditMail','uses'=>'SendMailController@postEditMail']);
+			'editmail',[
+				'as'=>'admin.mail.postEditMail',
+				'uses'=>'SendMailController@postEditMail'
+			]);
+		Route::post(
+			'delete-mail',[
+				'as'=>'admin.mail.deleteMail',
+				'uses'=>'SendMailController@postdeleteMail']);
 		Route::get(
-			'sent',['as'=>'admin.mail.sent','uses'=>'SendMailController@getsent']);
+			'sent',[
+				'as'=>'admin.mail.sent',
+				'uses'=>'SendMailController@getsent'
+			]);
 		Route::get(
-			'read',['as'=>'admin.mail.read','uses'=>'SendMailController@getread']);
+			'read',[
+				'as'=>'admin.mail.read',
+				'uses'=>'SendMailController@getread'
+			]);
 		});
 	});

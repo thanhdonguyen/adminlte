@@ -56,19 +56,21 @@
     	$.get("{{ route('admin.mail.getEditMail') }}",{id : id}, function(data){
     		console.log(data);
     		$("#frm-editmailmodal").find('#first_name').val(data.first_name);
+        $("#frm-editmailmodal").find('#id').val(data.id);
     		$("#frm-editmailmodal").find('#last_name').val(data.last_name);
     		$("#frm-editmailmodal").find('#email').val(data.email);
     		$("#frm-editmailmodal").find('#company').val(data.company);
-    		if(data.sex==$('#sex').val()){
-    			$("#frm-editmailmodal").find("#sex").attr('checked',true);
-    		}
-    		else{
-    			$("#frm-editmailmodal").find("#sex").attr('checked',false);
-    		}
+        $("#frm-editmailmodal").find("#sex").each(function(){
+          // console.log($(this).val())
+          if(data.sex == $(this).val())
+            $(this).attr('checked',true);
+          else
+            $(this).attr('checked',false);
+        });
         	$("#EditMailModal").modal('show');
-        	$('#btn_editemail').click(function(){
-        		alert($('input[name=sex]:checked').val());
-        	});
+        	// $('#btn_editemail').click(function(){
+        	// 	alert($('input[name=sex]:checked').val());
+        	// });
     	});
     });
     // ------------------Modal Post edit mail -------------
@@ -78,8 +80,44 @@
 	    var url = $(this).attr('action');
 	    $.post(url,data,function(data){
 	    	console.log(data);
+        $('#EditMailModal').modal('hide');
+        swal("Updated success !", "You clicked the button!", "success");
+        $('#example1').load("{{ route('admin.mail.getmail') }} #reloadajax");
 	    });
   	});
+    $('#close-editEmail').click(function(){
+      // alert(1111);
+      $('#frm-editmailmodal').trigger('reset');
+      $('#example1').load();
+    });
+    // -------------------Delete mail ----------------
+    $('body').delegate('#btn_delete_email', 'click', function(e) {
+      swal({
+        title: "Are you sure want to delete ?",
+        text: $("#frm-editmailmodal").find('#email').val(),
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          e.preventDefault();
+          var id = $("#frm-editmailmodal").find('#id').val();
+          var url = '{{ route('admin.mail.deleteMail') }}';
+          $.post(url,{id:id}, function(data){
+            $('#EditMailModal').modal('hide');
+            console.log(data);
+          });
+          swal("Poof! Your imaginary file has been deleted!", {
+            icon: "success",
+          });
+        } else {
+          // $('#EditMailModal').modal('hide');
+          swal.stopLoading();
+          swal.close();
+        }
+      });
+    });
     // -------------magicSuggrest------------
     // var email_tos = $('#email_tos').magicSuggest({
     //   data: '',
@@ -112,7 +150,7 @@
       $('.chkbx:checked').each(function(){
           text += $(this).val()+',';
       });
-      text = text.substring(0,text.length-1);
+      text = text.substring(0,text.length);
       $('#email_to').val(text);
     });
     $('.chkbx').click(function(){
@@ -120,7 +158,7 @@
       $('.chkbx:checked').each(function(){
           text += $(this).val()+',';
       });
-      text = text.substring(0,text.length-1);
+      text = text.substring(0,text.length);
       $('#email_to').val(text);
     });
   });
