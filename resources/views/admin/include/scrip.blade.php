@@ -34,7 +34,7 @@
         },
         error: function(data){
           var errors = data.responseJSON;
-          // console.log(data);
+          console.log(data);
           $('#email-error').html(errors.errors.email3[0]);
           $('#email-error1').addClass("has-feedback has-error");
         }

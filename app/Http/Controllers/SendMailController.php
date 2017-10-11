@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\RequestSentmail;
 use App\Http\Requests\RequestAddMail;
 use App\Mail\SendMail;
+use App\Jobs\SendmailJob;
 use Illuminate\Support\Facades\Storage;
 use Auth,DB,Mail,File;
 use App\User;
@@ -38,17 +39,23 @@ class SendMailController extends Controller
         $email = explode(",",$email_to);
         $title = $request->title;
         $subject = $request->subject;
-        $message = $request->message;
+        $messages = $request->message;
         //--------
         // $path = $request->file('attachment')->store('public');
         // return $path;
         // $name = $request->file('attachment')->getClientOriginalName();
         // Storage::move('public/'.$name,'public/upload/'.$name);
         //--------
-        foreach($email as $e){
-            Mail::to($e)->send(new SendMail($message));
+        // foreach($email as $e){
+        //     // Mail::to($e)->send(new SendMail($message));
 
-        }
+
+        // }
+        dispatch(new SendmailJob([
+            'messages' => $messages,
+            'subject' => $subject
+        ]));
+        return redirect()->back();
 
     }
     public function postAddmail(RequestAddMail $request){

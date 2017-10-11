@@ -16,9 +16,11 @@ class SendMail extends Mailable
      *
      * @return void
      */
-    public function __construct($message)
+    public $data;
+
+    public function __construct(array $data)
     {
-        
+        $this->data = $data;
     }
 
     /**
@@ -28,6 +30,6 @@ class SendMail extends Mailable
      */
     public function build()
     {
-        return $this->view('admin.mail.message')->with([]);
+        return $this->view('admin.mail.message');
     }
 }

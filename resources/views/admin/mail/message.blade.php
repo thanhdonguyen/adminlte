@@ -8,6 +8,7 @@
 </head>
 <body>
 	<h1>Hello words</h1>
-	<p></p>
+	<label for="">subject :</label><p>{{ $data['subject'] }}</p>
+	<label for="">Messages :</label><p>{{ $data['messages'] }}</p>
 </body>
 </html>
