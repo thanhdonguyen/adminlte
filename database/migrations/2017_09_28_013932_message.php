@@ -14,13 +14,12 @@ class Message extends Migration
     public function up()
     {   Schema::create('message', function (Blueprint $table) {
             $table->increments('id')->index();
-            $table->string('mail_to');
-            $table->string('mail_ccc')->nullable();
-            $table->string('mail_bcc')->nullable();
+            $table->string('email_id');
+            $table->string('title')->nullable();
             $table->string('subject')->nullable();
             $table->text('message');
             $table->string('attachment')->nullable();
-            $table->integer('status');
+            $table->integer('status')->nullable();
             $table->timestamps();
         });
     }

@@ -8,7 +8,7 @@ class Message extends Model
 {
     protected $table = 'message';
 
-    protected $fillable = ['mail_to','mail_ccc','mail_bcc','subject','message','attachment','status'];
+    protected $fillable = ['email_id','title','subject','message','attachment','status'];
 
     public $timestamps = true;
 

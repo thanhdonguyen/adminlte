@@ -26,7 +26,7 @@ class RequestSentmail extends FormRequest
         return [
             'email_to'=>'required',
             'message'=>'required',
-            // 'attachment'=>'mimes:jpeg,png,jpg,gif,svg,txt,pdf,ppt,docx,doc,xls|max:2048'
+            'attachment'=>'mimes:jpeg,png,jpg,gif,svg,txt,pdf,ppt,docx,doc,xls|max:2048'
         ];
     }
     public function messages()
@@ -34,8 +34,8 @@ class RequestSentmail extends FormRequest
         return [
             'email_to.required'=>'Please enter email to !',
             'message.required'=>'Please enter message !',
-            // 'attachment.mimes'=>'Please choose file format : .jpeg, .png, .jpg, .gif, .svg, .txt, .pdf, .ppt, .docx, .doc, .xls',
-            // 'attachment.max'=>'Max size 2M'
+            'attachment.mimes'=>'Please choose file format : .jpeg, .png, .jpg, .gif, .svg, .txt, .pdf, .ppt, .docx, .doc, .xls',
+            'attachment.max'=>'Max size 2M'
         ];
     }
 }

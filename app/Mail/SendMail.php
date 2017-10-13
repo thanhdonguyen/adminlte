@@ -17,10 +17,12 @@ class SendMail extends Mailable
      * @return void
      */
     public $data;
+    public $key;
 
-    public function __construct(array $data)
+    public function __construct(array $data, $key)
     {
         $this->data = $data;
+        $this->key = $key;
     }
 
     /**
@@ -30,6 +32,14 @@ class SendMail extends Mailable
      */
     public function build()
     {
-        return $this->view('admin.mail.message');
+        // print_r($this->$customer);die;
+        if(empty($this->data['path'])){
+            return $this->view('admin.mail.message')
+                        ->subject($this->data['subject']);
+        }else{
+            return $this->view('admin.mail.message')
+                        ->subject($this->data['subject'])
+                        ->attach($this->data['path']);
+        }
     }
 }

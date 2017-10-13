@@ -14,7 +14,6 @@
         <li class="active">Mailbox</li>
       </ol>
     </section>
-
     <!-- Main content -->
     <section class="content">
       <div class="row">

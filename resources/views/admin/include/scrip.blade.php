@@ -1,3 +1,10 @@
+  @if(session('sendmail'))
+  <script>
+    $(document).ready(function(){
+      swal("Success !", "Emails have been sent !", "success");
+    })
+  </script>
+  @endif
 <script>
 	  $(function () {
     //Add text editor
@@ -150,7 +157,7 @@
       $('.chkbx:checked').each(function(){
           text += $(this).val()+',';
       });
-      text = text.substring(0,text.length);
+      text = text.substring(0,text.length-1);
       $('#email_to').val(text);
     });
     $('.chkbx').click(function(){
@@ -158,7 +165,7 @@
       $('.chkbx:checked').each(function(){
           text += $(this).val()+',';
       });
-      text = text.substring(0,text.length);
+      text = text.substring(0,text.length-1);
       $('#email_to').val(text);
     });
   });

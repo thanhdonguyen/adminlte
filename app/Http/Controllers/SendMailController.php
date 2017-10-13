@@ -7,8 +7,7 @@ use App\Http\Requests\RequestSentmail;
 use App\Http\Requests\RequestAddMail;
 use App\Mail\SendMail;
 use App\Jobs\SendmailJob;
-use Illuminate\Support\Facades\Storage;
-use Auth,DB,Mail,File;
+use Auth,DB,Mail,File,Input;
 use App\User;
 use App\Customers;
 use App\Message;
@@ -36,26 +35,31 @@ class SendMailController extends Controller
     }
     public function postmail(RequestSentmail $request){
         $email_to = $request->email_to;
-        $email = explode(",",$email_to);
+        $emails = explode(",",$email_to);
         $title = $request->title;
         $subject = $request->subject;
         $messages = $request->message;
-        //--------
-        // $path = $request->file('attachment')->store('public');
-        // return $path;
-        // $name = $request->file('attachment')->getClientOriginalName();
-        // Storage::move('public/'.$name,'public/upload/'.$name);
-        //--------
-        // foreach($email as $e){
-        //     // Mail::to($e)->send(new SendMail($message));
-
-
-        // }
-        dispatch(new SendmailJob([
+        $attachment = Input::file('attachment');
+        if(!empty($attachment)){
+            $filename = time()."_".$attachment->getClientOriginalName();
+            $attachment->move('upload',$filename);
+            $path = 'public/upload/'.$filename;
+        }else{
+            $path = null;
+        }
+        $customers = Customers::whereIn('email',$emails)->get()->toArray();
+        // dd($customers);
+        $data = ([
             'messages' => $messages,
-            'subject' => $subject
-        ]));
-        return redirect()->back();
+            'subject' => $subject,
+            'title' => $title,
+            'customers' => $customers,
+            'emails' => $emails,
+            'path' => $path
+        ]);
+        // dd($data);
+        dispatch(new SendmailJob($data));
+        return redirect()->back()->with('sendmail','success');
 
     }
     public function postAddmail(RequestAddMail $request){
