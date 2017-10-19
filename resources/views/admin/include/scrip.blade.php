@@ -5,7 +5,48 @@
     })
   </script>
   @endif
+  @if(session('deletemail'))
+  <script>
+    $(document).ready(function(){
+      swal("Success !", "Emails have been sent !", "success");
+    })
+  </script>
+  @endif
 <script>
+    function confirmDelete (){
+      swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this imaginary file!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        swal("Poof! Your imaginary file has been deleted!", {
+          icon: "success",
+        });
+      } else {
+        swal("Your imaginary file is safe!");
+      }
+    });
+    }
+     $(document).ready(function() {
+        loadData();
+    });
+    var loadData = function() {
+        $.ajax({    //create an ajax request to load_page.php
+            type: "GET",
+            url: "{{ route('admin.mail.getCount') }}",
+            dataType: "html",   //expect html to be returned
+            success: function(response){
+              $("#countMessage").html(response);
+              $(".label-success").html(response);
+                // console.log(response);
+                // setTimeout(loadData, 5000);
+            }
+        });
+    };
 	  $(function () {
     //Add text editor
     $("#compose-textarea").wysihtml5();
@@ -37,7 +78,7 @@
           // var row = '<tr><td><input type="checkbox" class="chkbx" value="' + data.email3 + '"></td><td>' + data.email3 + '</td><td>' + data.company + '</td></tr>';
           // $('#customers').append(row);
           $('#frm-addmail').trigger('reset');
-          $('#example1').load("{{ route('admin.mail.getmail') }} #reloadajax");
+          // $('#example1').load("{{ route('admin.mail.getmail') }} #reloadajax");
         },
         error: function(data){
           var errors = data.responseJSON;
@@ -125,19 +166,6 @@
         }
       });
     });
-    // -------------magicSuggrest------------
-    // var email_tos = $('#email_tos').magicSuggest({
-    //   data: '',
-    //   ajaxConfig: {
-    //     xhrFields: {
-    //       withCredentials: true,
-    //     }
-    //   }
-    // });
-    // $(email_tos).on('selectionchange', function(){
-    //   var objval_array = this.getValue();
-    //   $('input[name=customer_ids]').val(JSON.stringify(objval_array));
-    // });
     $('#example1').DataTable()
     $('#example2').DataTable({
       'paging'      : true,
@@ -147,10 +175,6 @@
       'info'        : true,
       'autoWidth'   : false
     })
-    // $( "input[type=checkbox]" ).on( "click", function(){
-    //   // alert($(this).val());
-    //   ('#mail').val($(this).val());
-    // });
     $("#checkAll").click(function () {
       $('input:checkbox').not(this).prop('checked', this.checked);
       var text = "";

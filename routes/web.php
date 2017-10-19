@@ -53,14 +53,24 @@ Route::group(['prefix'=>'admin','middleware'=>'adminlogin'],function (){
 				'as'=>'admin.mail.deleteMail',
 				'uses'=>'SendMailController@postdeleteMail']);
 		Route::get(
-			'sent',[
-				'as'=>'admin.mail.sent',
-				'uses'=>'SendMailController@getsent'
+			'archive',[
+				'as'=>'admin.mail.archive',
+				'uses'=>'SendMailController@getArchive'
 			]);
 		Route::get(
-			'read',[
+			'read/{id}',[
 				'as'=>'admin.mail.read',
-				'uses'=>'SendMailController@getread'
+				'uses'=>'SendMailController@getRead'
+			]);
+		Route::get(
+			'count',[
+				'as'=>'admin.mail.getCount',
+				'uses'=>'SendMailController@getCount'
+			]);
+		Route::get(
+			'delete/{id}',[
+				'as'=>'admin.mail.getDelete',
+				'uses'=>'SendMailController@getDelete'
 			]);
 		});
 	});

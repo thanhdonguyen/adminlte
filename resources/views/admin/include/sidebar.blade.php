@@ -35,13 +35,12 @@
           <ul class="treeview-menu">
             <li class="active"><a href="{{ route('admin.mail.getmail') }}">Compose</a></li>
             <li>
-              <a href="{{ route('admin.mail.sent') }}">Sent
+              <a href="{{ route('admin.mail.archive') }}">Archive
                 <span class="pull-right-container">
-                  <span class="label label-primary pull-right">13</span>
+                  <span class="label label-primary pull-right" id="countMessage"></span>
                 </span>
               </a>
             </li>
-            <li><a href="{{ route('admin.mail.read') }}">Read</a></li>
           </ul>
         </li>
         <li class="header">LABELS</li>

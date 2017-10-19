@@ -46,6 +46,7 @@ class SendMailController extends Controller
             $path = 'public/upload/'.$filename;
         }else{
             $path = null;
+            $filename = null;
         }
         $customers = Customers::whereIn('email',$emails)->get()->toArray();
         // dd($customers);
@@ -55,6 +56,7 @@ class SendMailController extends Controller
             'title' => $title,
             'customers' => $customers,
             'emails' => $emails,
+            'filename'=> $filename,
             'path' => $path
         ]);
         // dd($data);
@@ -98,10 +100,46 @@ class SendMailController extends Controller
             return response($customers);
         }
     }
-    public function getsent(){
-    	return view('admin.page.sent');
+    public function getArchive(){
+        $archives = DB::table('customers')
+                    ->join('message',function($join){
+                        $join->on('message.email_id','=','customers.id');
+                    })
+                    ->get();
+        //             foreach($messages as $mes){
+        //                 echo $mes->first_name."<br>";
+        //             }
+        // dd($archives);
+        // return response($count_email);
+    	return view('admin.page.archive',compact('archives'));
     }
-    public function getread(){
-    	return view('admin.page.read');
+    public function getRead($id){
+        // echo $id;die;
+        $read = DB::table('customers')
+                    ->join('message',function($join) use($id){
+                        $join->on('message.email_id','=','customers.id')->where('message.id','=', $id);
+                    })
+                    ->first();
+                    // $read->first_name;
+                    // dd($read);
+    	return view('admin.page.read',compact('read'));
+    }
+    public function getCount(Request $request){
+        if ($request->ajax()) {
+            $count_email = Message::select('id')->count();
+            return response($count_email);
+        }
+    }
+    public function getDelete($id){
+        $message = Message::find($id);
+        $path = $message->toArray();
+        $file = public_path().'/upload/'.$path['attachment'];
+        // dd($path);
+        if(isset($path['attachment'])){
+           File::delete($file);
+        // dd($message);
+        }
+        $message->delete();
+        return redirect()->route('admin.mail.archive')->with('deletemail','success');
     }
 }

@@ -36,14 +36,14 @@ class SendmailJob implements ShouldQueue
     public function handle()
     {
         foreach($this->data['emails'] as $key => $email){
-            // $customers = Customers::where('email',$email)->first()->toArray();
-            // Message::create([
-            //     'email_id' => $customers['id'],
-            //     'title' => $this->data['title'],
-            //     'subject' => $this->data['subject'],
-            //     'message' => $this->data['messages'],
-            //     'attachment' => $this->data['attachment']
-            // ]);
+            $customers = Customers::where('email',$email)->first()->toArray();
+            Message::create([
+                'email_id' => $customers['id'],
+                'title' => $this->data['title'],
+                'subject' => $this->data['subject'],
+                'message' => $this->data['messages'],
+                'attachment' => $this->data['filename']
+            ]);
             Mail::to($email)->queue(new SendMail($this->data,$key));
         }
     }
