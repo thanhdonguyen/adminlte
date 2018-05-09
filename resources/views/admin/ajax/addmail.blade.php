@@ -1,6 +1,6 @@
 <div class="modal fade" id="AddmailModal" role="dialog">
     <div class="modal-dialog">
-    
+
       <!-- Modal content-->
       <div class="modal-content">
                   <!-- Horizontal Form -->
@@ -63,6 +63,6 @@
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div> -->
       </div>
-      
+
   </div>
 </div>

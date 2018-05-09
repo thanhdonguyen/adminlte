@@ -193,4 +193,19 @@
       $('#email_to').val(text);
     });
   });
+
+  $(document).ready(function() {
+    //set initial state.
+    $('.company').change(function() {
+        if(this.checked){
+          $('.sex').prop("checked", false);
+        }
+    });
+    $('.sex').change(function() {
+      if(this.checked){
+          $('.company').prop("checked", false);
+      }
+    });
+  });
+
 </script>
