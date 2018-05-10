@@ -10,4 +10,8 @@ class Hospital extends Model {
 	protected $fillable = ['name', 'create_by', 'update_by', 'is_deleted'];
 
 	public $timestamps = true;
+
+	public function accumulated() {
+		return $this->hasMany('App\Adachiku\Accumulated');
+	}
 }
