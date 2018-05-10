@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="">
 </head>
 <body>
-	<h1>Welcome {{ $name }} </h1><br>
-	<a href="{{ URL::route('resetpass',$token) }}">{{ URL::route('resetpass',$token) }}</a>
+	<h1>Welcome {{ $data['name'] }} </h1><br>
+	<a href="{{ URL::route('resetpass',$data['token']) }}">{{ URL::route('resetpass',$data['token']) }}</a>
 </body>
 </html>

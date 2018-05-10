@@ -75,6 +75,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'adminlogin'], function () {
 
 		Route::get('search', 'SendMailController@getSearch')->name('admin.search.get');
 		Route::post('search', 'SendMailController@postSearch')->name('admin.search.post');
-		Route::get('hospital', 'SendMailController@getCreate')->name('admin.hospital.create');
+		Route::get('hospital', 'HospitalController@getCreate')->name('admin.hospital.getCreate');
+		Route::post('hospital', 'HospitalController@postCreate')->name('admin.hospital.postCreate');
 	});
 });

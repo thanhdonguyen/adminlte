@@ -183,7 +183,5 @@ class SendMailController extends Controller {
 		}
 
 	}
-	public function getCreate() {
-		return view('admin.page.hospital.create');
-	}
+
 }

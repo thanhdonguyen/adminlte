@@ -28,18 +28,21 @@
               </div>
               <div class="box-body">
                 <!-- checkbox -->
-                <form action="{{ route('admin.search.post') }}" method="POST">
+                <form action="{{ route('admin.hospital.postCreate') }}" method="POST">
                   {{ csrf_field() }}
                   <div class="form-group">
                       <label for="exampleInputEmail1">Name</label>
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                      @if($errors->has('name'))
+                        <i>{{ $errors->first('name') }}</i>
+                      @endif
+                      <input type="text" class="form-control" id="exampleInputEmail1" value="{{ old('name') }}" name="name" placeholder="Enter email">
                   </div>
 
                   <div class="form-group">
 
                    <div class="checkbox">
                       <label>
-                        <input type="checkbox"> Is active
+                        <input type="checkbox" value="1" name="is_deleted"> Is active
                       </label>
                     </div>
                   </div>
@@ -48,6 +51,9 @@
                       <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                   </div>
+                  @if(Session::has('success'))
+                    <strong>{{ Session::get('success') }}</strong>
+                  @endif
                 </form>
 
             </div>
